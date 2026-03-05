@@ -1,16 +1,11 @@
-// ============================================
-// app.js - Archivo principal del servidor
-// Hecho por: Estudiante 1 (Persona 1)
-// Universidad Don Bosco - DWS
-// ============================================
 
-// Importamos express (lo instalamos con: npm install express)
+
 const express = require('express');
 
-// Creamos la aplicacion
+// app
 const app = express();
 
-// Definimos el puerto donde va a correr el servidor
+// puerto donde corre el servidor
 const PORT = 3000;
 
 // Middleware para que el servidor pueda leer datos en formato JSON
@@ -22,12 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware para servir archivos estaticos (CSS, imagenes, etc.)
 app.use(express.static('public'));
 
-// -----------------------------------------------
-// RUTAS PRINCIPALES (Estudiante 1 - estructura base)
-// Las rutas completas las agrega el Estudiante 3
-// -----------------------------------------------
 
-// Ruta de inicio - pagina principal
+// pagina principal
 app.get('/', (req, res) => {
   res.send(`
     <html>
@@ -58,7 +49,7 @@ app.get('/', (req, res) => {
   `);
 });
 
-// Iniciamos el servidor
+// para iniciar el servidor
 app.listen(PORT, () => {
   console.log('===========================================');
   console.log('  Servidor corriendo en: http://localhost:' + PORT);
@@ -67,5 +58,5 @@ app.listen(PORT, () => {
   console.log('===========================================');
 });
 
-// Exportamos app para que otros archivos puedan usarla
+
 module.exports = app;
