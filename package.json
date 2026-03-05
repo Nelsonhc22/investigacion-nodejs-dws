@@ -1,0 +1,14 @@
+{
+  "name": "proyecto-nodejs-dws",
+  "version": "1.0.0",
+  "description": "Aplicacion web con NodeJs - Investigacion DWS Universidad Don Bosco",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Grupo DWS - Universidad Don Bosco",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
