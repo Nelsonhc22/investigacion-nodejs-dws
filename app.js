@@ -14,7 +14,7 @@ app.use(express.json());
 // Middleware para que el servidor pueda leer datos de formularios
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware para servir archivos estaticos (CSS, imagenes, etc.)
+// Middleware para servir archivos estaticos
 app.use(express.static('public'));
 
 
