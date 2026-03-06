@@ -23,12 +23,12 @@ app.get('/', (req, res) => {
   res.send(`
     <html>
       <head>
-        <title>App NodeJs - DWS</title>
+        <title>Practica Node.js</title>
         <style>
           body { font-family: Arial; text-align: center; padding: 50px; background: #f0f0f0; }
           h1 { color: #333; }
           p { color: #666; }
-          .btn { 
+          .btn { s
             display: inline-block; 
             padding: 10px 20px; 
             background: #4CAF50; 
@@ -40,8 +40,8 @@ app.get('/', (req, res) => {
         </style>
       </head>
       <body>
-        <h1>Bienvenido a la App NodeJs</h1>
-        <p>Proyecto de investigacion - DWS - Universidad Don Bosco</p>
+        <h1>Bienvenido a la App de practica de NodeJs PREMIER CODERS</h1>
+        <p>Practica de Node.js</p>
         <a href="/info" class="btn">Ver informacion</a>
         <a href="/datos" class="btn">Ver datos</a>
       </body>
@@ -51,11 +51,9 @@ app.get('/', (req, res) => {
 
 // para iniciar el servidor
 app.listen(PORT, () => {
-  console.log('===========================================');
   console.log('  Servidor corriendo en: http://localhost:' + PORT);
-  console.log('  Proyecto: App NodeJs - DWS');
-  console.log('  Universidad Don Bosco');
-  console.log('===========================================');
+  console.log('  Practica, App Node.js de materia DWS');
+
 });
 
 
