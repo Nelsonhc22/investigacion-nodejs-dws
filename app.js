@@ -9,11 +9,10 @@ const app = express();
 // -----------------------------------------------
 // VARIABLES
 // -----------------------------------------------
-const PORT         = 3000;
-const nombreGrupo  = 'Premier Coders';
-const materia      = 'DWS901';
+const PORT        = 3000;
+const nombreGrupo = 'Premier Coders';
+const materia     = 'DWS901';
 
-// Lista de estudiantes en memoria
 let estudiantes = [
   { id: 1, nombre: 'Ana Garcia',    carrera: 'Ingenieria en Sistemas' },
   { id: 2, nombre: 'Carlos Lopez',  carrera: 'Ingenieria en Sistemas' },
@@ -24,7 +23,6 @@ let estudiantes = [
 // FUNCIONES
 // -----------------------------------------------
 
-// Funcion que retorna la fecha actual formateada
 function obtenerFecha() {
   return new Date().toLocaleDateString('es-SV', {
     weekday: 'long', year: 'numeric',
@@ -32,7 +30,6 @@ function obtenerFecha() {
   });
 }
 
-// Funcion que genera el HTML base de cada pagina
 function generarPagina(titulo, contenido) {
   return `
     <!DOCTYPE html>
@@ -128,9 +125,24 @@ function generarPagina(titulo, contenido) {
 const EventEmitter = require('events');
 const emisor = new EventEmitter();
 
-// Evento que se dispara cuando se agrega un estudiante
+// Evento 1: servidor iniciado
+emisor.on('servidorIniciado', (puerto) => {
+  console.log('>> Servidor listo en el puerto: ' + puerto);
+});
+
+// Evento 2: solicitud recibida
+emisor.on('solicitudRecibida', (ruta) => {
+  console.log('>> Solicitud recibida en: ' + ruta);
+});
+
+// Evento 3: estudiante agregado
 emisor.on('estudianteAgregado', (nombre) => {
-  console.log('Evento: se agrego el estudiante -> ' + nombre);
+  console.log('>> Nuevo estudiante registrado: ' + nombre);
+});
+
+// Evento 4: error - ruta no encontrada
+emisor.on('errorServidor', (mensaje) => {
+  console.log('>> Error: ' + mensaje);
 });
 
 // -----------------------------------------------
@@ -139,6 +151,12 @@ emisor.on('estudianteAgregado', (nombre) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+
+// Middleware: dispara evento en cada solicitud
+app.use((req, res, next) => {
+  emisor.emit('solicitudRecibida', req.url);
+  next();
+});
 
 // -----------------------------------------------
 // RUTAS
@@ -241,7 +259,7 @@ app.post('/agregar', (req, res) => {
 
   estudiantes.push(nuevoEstudiante);
 
-  // Disparar el evento
+  // Disparar evento de estudiante agregado
   emisor.emit('estudianteAgregado', nombre);
 
   const contenido = `
@@ -256,12 +274,27 @@ app.post('/agregar', (req, res) => {
   res.send(generarPagina('Listo', contenido));
 });
 
+// Ruta no encontrada - dispara evento de error
+app.use((req, res) => {
+  emisor.emit('errorServidor', 'Ruta no encontrada: ' + req.url);
+  res.status(404).send(generarPagina('404', `
+    <div class="card" style="text-align:center; padding: 60px;">
+      <h1 style="font-size:60px; color:#e74c3c;">404</h1>
+      <h2>Pagina no encontrada</h2>
+      <p>La ruta <strong>${''}${''}</strong> no existe en este servidor.</p>
+      <a href="/" class="btn">Volver al inicio</a>
+    </div>
+  `));
+});
+
 // -----------------------------------------------
 // INICIAR EL SERVIDOR
 // -----------------------------------------------
 app.listen(PORT, () => {
-  console.log('Servidor corriendo en: http://localhost:' + PORT);
+  emisor.emit('servidorIniciado', PORT);
   console.log('Grupo: ' + nombreGrupo + ' | Materia: ' + materia);
+  console.log('Presiona Ctrl+C para detener');
+  console.log('');
 });
 
 module.exports = app;
