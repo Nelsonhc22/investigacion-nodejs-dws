@@ -1,14 +1,7 @@
 const express = require('express');
-
-// =============================================
-//   PREMIER CODERS - Practica Node.js DWS901
-// =============================================
-
 const app = express();
 
-// -----------------------------------------------
 // VARIABLES
-// -----------------------------------------------
 const PORT        = 3000;
 const nombreGrupo = 'Premier Coders';
 const materia     = 'DWS901';
@@ -19,10 +12,8 @@ let estudiantes = [
   { id: 3, nombre: 'Maria Ramirez', carrera: 'Ingenieria en Sistemas' },
 ];
 
-// -----------------------------------------------
-// FUNCIONES
-// -----------------------------------------------
 
+// FUNCIONES
 function obtenerFecha() {
   return new Date().toLocaleDateString('es-SV', {
     weekday: 'long', year: 'numeric',
@@ -119,9 +110,8 @@ function generarPagina(titulo, contenido) {
   `;
 }
 
-// -----------------------------------------------
+
 // MANEJO DE EVENTOS
-// -----------------------------------------------
 const EventEmitter = require('events');
 const emisor = new EventEmitter();
 
@@ -145,9 +135,7 @@ emisor.on('errorServidor', (mensaje) => {
   console.log('>> Error: ' + mensaje);
 });
 
-// -----------------------------------------------
 // MIDDLEWARES
-// -----------------------------------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -158,10 +146,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// -----------------------------------------------
-// RUTAS
-// -----------------------------------------------
 
+// Rutas
 // Pagina principal
 app.get('/', (req, res) => {
   const contenido = `
@@ -274,7 +260,7 @@ app.post('/agregar', (req, res) => {
   res.send(generarPagina('Listo', contenido));
 });
 
-// Ruta no encontrada - dispara evento de error
+// Ruta no encontrada, aqui para recordar que dispara evento de error
 app.use((req, res) => {
   emisor.emit('errorServidor', 'Ruta no encontrada: ' + req.url);
   res.status(404).send(generarPagina('404', `
@@ -287,9 +273,7 @@ app.use((req, res) => {
   `));
 });
 
-// -----------------------------------------------
-// INICIAR EL SERVIDOR
-// -----------------------------------------------
+// Iniciar el servidor
 app.listen(PORT, () => {
   emisor.emit('servidorIniciado', PORT);
   console.log('Grupo: ' + nombreGrupo + ' | Materia: ' + materia);
